@@ -20,11 +20,11 @@ The package exports an easy-to-use `match` wrapper function with the following s
 (pattern: any, g: matchCallback, fallthrough: boolean = false): any 
 ```
 
-In `matchCallback` you are provided with a `Match` instance and the `pattern` to test against. The `pattern` internally is treated as a tuple, and you may match individually nth-tuple values. You may chain cases with optionally passing through after a match. Indeed, you may build quite impressive parsers with this.
+In `matchCallback` you are provided with a `Match` instance and the `pattern` to test against. The `pattern` internally is converted and treated as a tuple, and you may match individually nth-tuple values. You may chain cases with optionally passing-through after a match.
 
-Similar to Swift, each case chain **must** end with a `default` or `_()` call. By default, `default` calls itself with the `identity` function, returning the last case; `_()` also by default returns the 1st value of the `pattern` tuple. This is useful when matching only on a single scalar value like a `number`.
+Similar to Swift, each case chain **must** end with a `default` or `_()` call. By default, `default` calls itself with the `identity` function, returning the last matched case; `default` also by default returns the 1st value of the `pattern` converted tuple. This is useful when matching on a simple value like a `number`.
 
-Optionally, when the second argument of `_()` is false, it will return the matching result of the entire tuple (the first arg can be `null` to get the last match). Useful when pattern matching on lists.
+Optionally, when the second argument of `default` is false, it will return the matching result of the entire tuple (the first arg can be `null` to use the last matched case). Useful when pattern matching on lists.
 
 ### Basic Example
 
