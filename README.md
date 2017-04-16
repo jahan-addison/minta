@@ -29,26 +29,26 @@ Optionally, when the second argument of `_()` is false, it will return the match
 ### Basic Example
 
 ```javascript
-const b = match([1,2,3], pattern => {
+const a = match([1,2,3], pattern => {
   return pattern
     .case([1,2,3], _ => [3,2,1], true)       // passthrough
     .case([3,2,1], _ => [true, false], true) // passthrough
     .default(null, false)
 });
-console.log(b); // [true, false]
+console.log(a); // [true, false]
 ```
 
 ### Real world examples (excerpts from website)
 
 ```javascript
 // clamp
-const b   = match(723, (pattern, value) => {
+const a   = match(723, (pattern, value) => {
   return pattern
     .case(value < min, _ => min)
     .case(value < max, _ => value)
     ._(z => max) // default alias
 });
-console.log(b); // 500
+console.log(a); // 500
 ```
 
 ```javascript
