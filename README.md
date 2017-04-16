@@ -46,7 +46,7 @@ const a   = match(723, (pattern, value) => {
   return pattern
     .case(value < min, _ => min)
     .case(value < max, _ => value)
-    ._(z => max) // default alias
+    ._(_ => max) // default alias
 });
 console.log(a); // 500
 ```
