@@ -42,11 +42,13 @@ console.log(a); // [true, false]
 
 ```javascript
 // clamp
+const min = 300;
+const max = 500;
 const a   = match(723, (pattern, value) => {
   return pattern
     .case(value < min, _ => min)
     .case(value < max, _ => value)
-    ._(_ => max) // default alias
+    .default(_ => max)
 });
 console.log(a); // 500
 ```
