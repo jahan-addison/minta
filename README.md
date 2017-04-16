@@ -4,7 +4,7 @@
 
 ## Details
 
-matzen was created during the development of the graphical intricacies in my [https://jahan.engineer](new website). It was inspired by the pattern matching systems in Swift and Haskell. 
+matzen was created during the development of the graphical intricacies in my [new website](https://jahan.engineer). It was inspired by the pattern matching systems in Swift and Haskell. 
 
 You may use this project without typescript, and is installable via `npm install matzen`
 
