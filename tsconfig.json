@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": false,
+        "target": "es2015",
+        "outDir": "dist",
+        "module": "commonjs",
+        "removeComments": true
+    },
+    "files": [
+        "matzen.ts",
+        "test.ts"
+    ]
+}

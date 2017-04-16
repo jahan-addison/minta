@@ -1,0 +1,16 @@
+{
+  "name": "matzen",
+  "version": "2.1.0",
+  "description": "Simple, functional, pattern matcher in Typescript",
+  "main": "dist/matzen.js",
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "typescript": "^2.2.2"
+  },
+  "scripts": {
+    "build": "./node_modules/typescript/bin/tsc",
+    "test": "./node_modules/typescript/bin/tsc && ./node_modules/ava/cli.js dist/test.js"
+  },
+  "author": "Jahan Addison",
+  "license": "Apache-2.0"
+}
