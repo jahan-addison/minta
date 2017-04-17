@@ -64,16 +64,25 @@ test('Match#case should apply function: callback on equality of <value> tuple an
   t.deepEqual(t.context.data[3].value, new Value([true, false]));
 });
 
-test('Match#_ should apply identity by default and return 1st value of tuple', t => {
-  t.is(t.context.data[3]._(), 1);
+test('Match#case should apply function: callback on 1st value of tuple on 1-tuple', t => {
+  t.deepEqual(new Value([t.context.data[1]]).apply(_ => _ + 1), new Value([2]));
 });
 
-test('Match#_ should apply function: callback and return 1st value of tuple', t => {
-  t.is(t.context.data[3]._(_ => 5), 5);
+test('Match#case should apply function: callback and pass whole tuple when n > 1', t => {
+  t.deepEqual(new Value(t.context.data[3]).apply(_ => [3,2,1]), new Value([3,2,1]));
 });
 
-test('Match#_ should apply identity by default and can return tuple', t => {
-  t.deepEqual(t.context.data[3]._(null, false), [1,2,3]);
+
+test('Match#_ should apply identity by default and return 1st value on 1-tuple', t => {
+  t.is(new Match([1])._(), 1);
+});
+
+test('Match#_ should apply function: callback and return 1st value of 1-tuple', t => {
+  t.is(new Match([1])._(_ => 5), 5);
+});
+
+test('Match#_ should apply identity by default and can will tuple', t => {
+  t.deepEqual(t.context.data[3]._(), [1,2,3]);
 });
 
 test('Match#isFallable should return whether matching instance falls through', t => {

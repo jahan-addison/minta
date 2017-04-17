@@ -4,7 +4,7 @@
 
 ## Details
 
-matzen was created during the development of the graphical intricacies in my [new website](https://jahan.engineer). It was inspired by the pattern matching systems in Swift and Haskell. 
+matzen was created during the development of the graphical artwork on my [new website](https://jahan.engineer). It was inspired by the pattern matching systems in Swift and Haskell. 
 
 You may use this project without typescript, and is installable via `npm install matzen`
 
@@ -20,28 +20,25 @@ The package exports an easy-to-use `match` wrapper function with the following s
 (pattern: any, g: matchCallback, fallthrough: boolean = false): any 
 ```
 
-In `matchCallback` you are provided with a `Match` instance and the `pattern` to condition against. The `pattern` may be a primitive value, object, or tuple, and you may match individually nth-tuple values. You may chain cases with optionally passing-through after a match.
+In `matchCallback` you are provided with a `Match` instance and the `pattern` to condition against. The `pattern` may be a primitive value, object, or tuple, and you may match individually nth-tuple values. You can chain cases while optionally passing-through after a match.
 
-Similar to Swift, each case chain **must** end with a `default` or `_()` call. By default, `default` calls itself with the `identity` function, returning the last matched case; `default` also by default returns the 1st value of the `pattern` converted tuple. This is useful when matching on a simple value like a `number`.
-
-Optionally, when the second argument of `default` is false, it will return the matching result of the entire tuple (the first arg can be `null` to use the last matched case). Useful when pattern matching on lists.
-
+Similar to Swift, each case chain **must** end with a `default` or `_()` call. By default, `default` calls itself with the `identity` function, returning the last matched case value (or fallthrough value). `default` may also be called with a final match case callback.
+ 
 ### Basic Example
 
 ```javascript
 const a = match([1,2,3], pattern => {
   return pattern
-    .case([1,2,3], _ => [3,2,1], true)       // passthrough
-    .case([3,2,1], _ => [true, false], true) // passthrough
-    .default(null, false)
+    .case([1,2,3], _ => [3,2,1], true) // fallthrough
+    .case([3,2,1], _ => [..._, true, false], true) // fallthrough
+    .default()
 });
-console.log(a); // [true, false]
+console.log(a); // [3, 2, 1, true, false]
 ```
 
-### Real world examples (excerpts from website)
+### Real world examples 
 
 ```javascript
-// clamp
 const min = 300;
 const max = 500;
 const a   = match(723, (pattern, value) => {

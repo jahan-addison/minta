@@ -1,4 +1,4 @@
-type callback  = (_: value) => any;
+type callback  = (_: any) => any;
 type Tuple     = Array<any>;
 export type value  = Tuple;
 
@@ -23,10 +23,10 @@ export class Value {
     return this.x.reduce((a,b,i,g) => a !== false && g[i] === e.read()[i], true);
   }
   public map(g: callback): Value {
-    return Value.toValue(this.x.map(g));
+    return new Value(this.x.map(g));
   }
   public apply(g: callback): Value {
-    return Value.toValue(g(this.x));
+    return Value.toValue(g(this.x.length > 1 ? this.x : this.x[0]));
   }
   public read(): value {
     return this.x;
@@ -59,15 +59,15 @@ export class Match implements Matchable {
     }
     return this;
   }
-  public default(g: callback = identity, only: boolean = true): any {
-    return this._(g, only);
+  public default(g: callback = identity): any {
+    return this._(g);
   }
 
-  public _(g: callback = identity, only: boolean = true): any {
+  public _(g: callback = identity): any {
     if(!this.matched) {
       this.value = g ? this.value.apply(g) : this.value.apply(identity);
     }
-    return only ? this.value.read()[0] : this.value.read();
+    return this.value.read().length > 1 ? this.value.read() : this.value.read()[0];
   }
 
   protected isFallable(fallthrough?: boolean): boolean {
@@ -89,26 +89,3 @@ export function match(pattern: any, g: matchCallback, fallthrough: boolean = fal
   const ref   = new Match(tuple, fallthrough);
   return g.call(ref, ref, pattern);
 }
-
-/*
-  // Simple:
-  const a = match([1,2,3], pattern => {
-    return pattern
-      .case([1,2,3], _ => 2)
-      .default()
-  });
-  // 2
-  console.log(a);
-
-  // Clamp:
-  const min = 200;
-  const max = 500;
-  const b   = match(723, (pattern, z) => {
-    return pattern
-      .case(z < min, _ => min)
-      .case(z < max, _ => z)
-      ._(z => max) // default alias
-  });
-  // 500
-  console.log(b);
-*/
