@@ -39,15 +39,22 @@ console.log(a); // [3, 2, 1, true, false]
 ### Real world examples 
 
 ```javascript
-const min = 300;
-const max = 500;
-const a   = match(723, (pattern, value) => {
+const a = match(868, (pattern, value) => {
   return pattern
     .case(value < min, _ => min)
     .case(value < max, _ => value)
     .default(_ => max)
 });
-console.log(a); // 500
+```
+
+```javascript
+function fib(n) {
+  return match(n, (_, v) => _
+    .case(0, x => 1)
+    .case(1, x => 1)
+    .case(v >= 2, x => fib(x-1) + fib(x-2))
+    ._());
+}
 ```
 
 ```javascript
@@ -57,7 +64,7 @@ const lineLength = match(width, (_,v) => {
   .case(v > 1200 && v < 1600 && pixelRatio < 2, n => {
     return (85.65/100) * height;
   })
-  .case(v > 1350 && pixelRatio >= 2, n => { // retina
+  .case(v > 1350 && pixelRatio >= 2, n => {
     return  (72.75/100) * width
   })
   ._(n => (70.65/100) * width);
