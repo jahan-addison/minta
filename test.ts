@@ -37,13 +37,13 @@ test('Match#case should apply function: callback on boolean pattern', t => {
 
 test('Match#case should apply function: callback on boolean and not fall through by default', t => {
   t.context.data[3].case(true, _ => [3,2,1]);
-  t.context.data[3].case(true, _ => [4,5,6]);  
+  t.context.data[3].case(true, _ => [4,5,6]);
   t.deepEqual(t.context.data[3].value, new Value([3,2,1]));
 });
 
 test('Match#case should apply function: callback on boolean and can fall through', t => {
   t.context.data[3].case(true, _ => [3,2,1], true);
-  t.context.data[3].case(true, _ => [4,5,6], true);  
+  t.context.data[3].case(true, _ => [4,5,6], true);
   t.deepEqual(t.context.data[3].value, new Value([4,5,6]));
 });
 
@@ -54,13 +54,13 @@ test('Match#case should apply function: callback on equality of <value> tuple', 
 
 test('Match#case should apply function: callback on equality of <value> tuple and not fall through by default', t => {
   t.context.data[3].case([1,2,3], _ => [3,2,1]);
-  t.context.data[3].case([3,2,1], _ => [4,5,6]);  
+  t.context.data[3].case([3,2,1], _ => [4,5,6]);
   t.deepEqual(t.context.data[3].value, new Value([3,2,1]));
 });
 
 test('Match#case should apply function: callback on equality of <value> tuple and can fall through', t => {
   t.context.data[3].case([1,2,3], _ => [3,2,1], true);
-  t.context.data[3].case([3,2,1], _ => [true, false], true);  
+  t.context.data[3].case([3,2,1], _ => [true, false], true);
   t.deepEqual(t.context.data[3].value, new Value([true, false]));
 });
 
@@ -92,36 +92,12 @@ test('Match#isFallable should return whether matching instance falls through', t
   t.context.data[3].case([1,2,3], _ => [3,2,1]);
   t.false(t.context.data[3].isFallable());
   // a match was met, but fallthrough is overwritten
-  t.true(t.context.data[3].isFallable(true));  
+  t.true(t.context.data[3].isFallable(true));
 });
 
 // integration
 
-function testCallback1(pattern: Match) {
-  return pattern._(); // applies identity
-}
-
-function applySpy(callback) {
-  let spy = (<any>callback);
-  const spyProxy   = testCallback1.call;
-  spy.called = 0;
-  callback.call = function(...args) {
-    spy.called++;
-    spy._arguments = args;
-    return spyProxy.call(this, ...args);
-  }
-}
-
-test.serial('match wrapper function', t => {
-  let t1 = (<any>testCallback1);
-  applySpy(t1);
-  let m = match(100, t1);
-  t.is(t1.called, 1);
-  t.deepEqual(t1._arguments, [new Match(<value>[100]), new Match(<value>[100]), 100]);
-  t.is(m, 100);
-  // test fallthrough
-  m = match(100, t1, true);
-  t.is(t1.called, 2);
-  t.deepEqual(t1._arguments, [new Match(<value>[100], true), new Match(<value>[100], true), 100]);
-  t.is(m, 100);
+test('match wrapper function', t => {
+  t.deepEqual(match(5), new Match([5], false));
+  t.deepEqual(match([1,2,3], true), new Match([1,2,3], true));
 });

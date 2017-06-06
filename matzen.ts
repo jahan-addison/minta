@@ -82,10 +82,7 @@ export class Match implements Matchable {
   }
 }
 
-type matchCallback = (matched: Match, value?: any) => any;
-
-export function match(pattern: any, g: matchCallback, fallthrough: boolean = false): any {
+export function match(pattern: any, fallthrough: boolean = false): any {
   const tuple = <value>Array.prototype.concat.call([], pattern);
-  const ref   = new Match(tuple, fallthrough);
-  return g.call(ref, ref, pattern);
+  return new Match(tuple, fallthrough);
 }

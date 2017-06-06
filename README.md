@@ -2,9 +2,14 @@
 > Simple, functional, pattern matcher in TypeScript.
 
 
+## What is pattern matching?
+
+
+> Pattern matching is the act of checking a given sequence of tokens for the presence of the constituents of some pattern. In contrast to pattern recognition, the match usually has to be **exact**. The patterns have the form of either sequences or tree structures. Uses of pattern matching include outputting the locations (if any) of a pattern within a token sequence, to output some component of the matched pattern, and to substitute the matching pattern with some other token sequence (i.e., search and replace).
+
 ## Details
 
-matzen was created during the development of the graphical artwork on my [new website](https://jahan.engineer). It was inspired by the pattern matching systems in Swift and Haskell. 
+Matzen was born from recent graphical development. It was inspired by the pattern matching systems in Swift and Haskell.
 
 You may use this project without typescript, and is installable via `npm install matzen`
 
@@ -14,61 +19,64 @@ To run the test suite, run `npm test`.
 
 ## API
 
-The package exports an easy-to-use `match` wrapper function with the following signature:
+The package exports an easy-to-use `match` wrapper function which takes a primitive value or finite list (tuple). It allows you to individually match values, tuples, or conditions — and deal with their cases, while optionally 'passing-through' a newly parsed value to the next case.
 
-```typescript
-(pattern: any, g: matchCallback, fallthrough: boolean = false): any 
-```
+Similar to Swift, each case chain **must** end with a `default` or (alias) `_()` call. By default, `_()` calls itself with the `identity` function, returning the last matched case value (or fall-through value). `default` may also be called with a final match case callback.
 
-In `matchCallback` you are provided with a `Match` instance and the `pattern` to condition against. The `pattern` may be a primitive value, object, or tuple, and you may match individually nth-tuple values. You can chain cases while optionally passing-through after a match.
-
-Similar to Swift, each case chain **must** end with a `default` or `_()` call. By default, `default` calls itself with the `identity` function, returning the last matched case value (or fallthrough value). `default` may also be called with a final match case callback.
- 
-### Basic Example
+### Basic Examples
 
 ```javascript
-const a = match([1,2,3], pattern => {
-  return pattern
-    .case([1,2,3], _ => [3,2,1], true) // fallthrough
-    .case([3,2,1], _ => [..._, true, false], true) // fallthrough
-    .default()
-});
+const amount = 8;
+const a = match(amount)
+  .case(amount < 5, x => "You don't have enough to pay for that!")
+  .case(5, x => "This is the right amount!")
+  ._(x => "Too much money!");
+
+console.log(a); // "Too much money!"
+```
+
+```javascript
+const a = match([1,2,3])
+  .case([1,2,3], x => [3,2,1], true) // fall-through as new value
+  .case([3,2,1], x => [...x, true, false], true) // fall-through as new value
+  ._();
+
 console.log(a); // [3, 2, 1, true, false]
 ```
 
-### Real world examples 
+### Real world examples
 
 ```javascript
-const a = match(868, (pattern, value) => {
-  return pattern
-    .case(value < min, _ => min)
-    .case(value < max, _ => value)
-    .default(_ => max)
+// clamp
+const a = match(value)
+  .case(value < min, _ => min)
+  .case(value < max, _ => value)
+  .default(_ => max)
 });
 ```
 
 ```javascript
+// fib
 function fib(n) {
-  return match(n, (_, v) => _
+  return match(n)
     .case(0, x => 1)
     .case(1, x => 1)
-    .case(v >= 2, x => fib(x-1) + fib(x-2))
+    .case(n >= 2, x => fib(x-1) + fib(x-2))
     ._());
 }
 ```
 
 ```javascript
-const lineLength = match(width, (_,v) => {
-  return _
-  .case(v < 1200, n => (85.65/100) * height)
-  .case(v > 1200 && v < 1600 && pixelRatio < 2, n => {
-    return (85.65/100) * height;
+const line = match(width)
+  .case(width < 1200, n => 85.65 * height)
+  .case(width > 1200 && v < 1600 && pixelRatio < 2, n => {
+    return 85.65 * height;
   })
-  .case(v > 1350 && pixelRatio >= 2, n => {
-    return  (72.75/100) * width
+  .case(width > 1350 && pixelRatio >= 2, n => {
+    return  72.75 * width
   })
-  ._(n => (70.65/100) * width);
-});
+  ._(n => 70.65 * width);
+
 ```
 
 ## License
