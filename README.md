@@ -52,7 +52,6 @@ const a = match(value)
   .case(value < min, _ => min)
   .case(value < max, _ => value)
   .default(_ => max)
-});
 ```
 
 ```javascript
@@ -62,7 +61,7 @@ function fib(n) {
     .case(0, x => 1)
     .case(1, x => 1)
     .case(n >= 2, x => fib(x-1) + fib(x-2))
-    ._());
+    ._();
 }
 ```
 
