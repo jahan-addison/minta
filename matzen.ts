@@ -22,6 +22,9 @@ export class Value {
   public eq(e: Value): boolean {
     return this.x.reduce((a,b,i,g) => a !== false && g[i] === e.read()[i], true);
   }
+  public instanceOf(e: Function): boolean {
+    return this.read()[0] instanceof e;
+  }
   public map(g: callback): Value {
     return new Value(this.x.map(g));
   }
@@ -48,6 +51,13 @@ export class Match implements Matchable {
           this.matched = true;
           this.value   = this.value.apply(g);
         }
+      }
+    } else if (typeof x === 'function') {
+      if (this.value.instanceOf(x)) {
+        if (this.isFallable(fallthrough)) {
+          this.matched = true;
+          this.value   = this.value.apply(g);
+        }        
       }
     } else {
       if (this.value.eq(Value.toValue(x))) {

@@ -13,6 +13,9 @@ class Value {
     eq(e) {
         return this.x.reduce((a, b, i, g) => a !== false && g[i] === e.read()[i], true);
     }
+    instanceOf(e) {
+        return this.read()[0] instanceof e;
+    }
     map(g) {
         return new Value(this.x.map(g));
     }
@@ -34,6 +37,14 @@ class Match {
     case(x, g, fallthrough = false) {
         if (typeof x === 'boolean') {
             if (x) {
+                if (this.isFallable(fallthrough)) {
+                    this.matched = true;
+                    this.value = this.value.apply(g);
+                }
+            }
+        }
+        else if (typeof x === 'function') {
+            if (this.value.instanceOf(x)) {
                 if (this.isFallable(fallthrough)) {
                     this.matched = true;
                     this.value = this.value.apply(g);

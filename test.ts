@@ -4,7 +4,8 @@ import {Value, Match, match, value} from './matzen';
 test.beforeEach(t => {
   t.context.data = {
     0: <value>[1,2,3],  1: 1,  2: new Value([1,2,3]),
-    3: new Match([1,2,3]), 4: new Match([3,2,1], true)
+    3: new Match([1,2,3]), 4: new Match([3,2,1], true),
+    5: new Match([new String('test')])
   };
 });
 
@@ -46,6 +47,10 @@ test('Match#case should apply function: callback on boolean and can fall through
   t.context.data[3].case(true, _ => [4,5,6], true);
   t.deepEqual(t.context.data[3].value, new Value([4,5,6]));
 });
+
+test('Match#case should apply function on instance of match', t => {
+  t.is(t.context.data[5].case(String, () => true)._(), true);
+})
 
 test('Match#case should apply function: callback on equality of <value> tuple', t => {
   t.context.data[3].case(<value>[1,2,3], _ => [3,2,1]);

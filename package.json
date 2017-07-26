@@ -1,6 +1,6 @@
 {
   "name": "matzen",
-  "version": "2.2.9",
+  "version": "2.2.10",
   "description": "Simple, functional, pattern matcher in Typescript",
   "main": "dist/matzen.js",
   "devDependencies": {
