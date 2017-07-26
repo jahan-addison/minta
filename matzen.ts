@@ -23,7 +23,7 @@ export class Value {
     return this.x.reduce((a,b,i,g) => a !== false && g[i] === e.read()[i], true);
   }
   public instanceOf(e: Function): boolean {
-    return this.read()[0] instanceof e;
+    return this.read()[0].constructor.name === e.name;
   }
   public map(g: callback): Value {
     return new Value(this.x.map(g));

@@ -14,7 +14,7 @@ class Value {
         return this.x.reduce((a, b, i, g) => a !== false && g[i] === e.read()[i], true);
     }
     instanceOf(e) {
-        return this.read()[0] instanceof e;
+        return this.read()[0].constructor.name === e.name;
     }
     map(g) {
         return new Value(this.x.map(g));
