@@ -66,16 +66,19 @@ function fib(n) {
 ```
 
 ```javascript
-const line = match(width)
-  .case(width < 1200, n => 85.65 * height)
-  .case(width > 1200 && v < 1600 && pixelRatio < 2, n => {
-    return 85.65 * height;
-  })
-  .case(width > 1350 && pixelRatio >= 2, n => {
-    return  72.75 * width
-  })
-  ._(n => 70.65 * width);
+class Example {
+  do() {
+    return 'thing';
+  }
+}
+const example = new Example();
+const action = match(example)
+  .case(RegExp,  () => 'a regex')
+  .case(String,  () => 'a string')
+  .case(Example, (e) => e.do())
+  ._();
 
+console.log(action) // 'thing'
 ```
 
 ## License
