@@ -1,8 +1,8 @@
 {
-  "name": "matzen",
-  "version": "2.2.12",
-  "description": "Simple, functional, pattern matcher in Typescript",
-  "main": "dist/matzen.js",
+  "name": "minta",
+  "version": "3.0.0",
+  "description": "simple, powerful pattern matcher",
+  "main": "dist/minta.js",
   "devDependencies": {
     "ava": "^0.19.1",
     "typescript": "^2.2.2"

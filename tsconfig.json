@@ -7,7 +7,7 @@
         "removeComments": true
     },
     "files": [
-        "matzen.ts",
+        "minta.ts",
         "test.ts"
     ]
 }
