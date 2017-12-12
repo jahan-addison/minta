@@ -80,23 +80,6 @@ function match(pattern, passthrough = false) {
     };
 }
 exports.match = match;
-const value = 140;
-const min = 20;
-const max = 120;
-const a = match(value)(value < min, _ => min, value < max, _ => value, _ => max);
-console.log(a);
-function fib(n) {
-    return match(n)(0, x => 1, 1, x => 1, n >= 2, x => fib(x - 1) + fib(x - 2), _ => n);
-}
-console.log(fib(5));
-class Example {
-    do() {
-        return 'thing';
-    }
-}
-const example = new Example();
-const action = match(example)(RegExp, () => 'a regex', String, () => 'a string', Example, (e) => e.do(), () => false);
-console.log(action);
 exports.Test = {
     isTuple,
     is,
