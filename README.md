@@ -7,12 +7,17 @@
 
 ## Details
 
-Minta was born from recent graphical development. It was inspired by the pattern matching systems in Swift and Haskell.
+Minta was inspired by the pattern matching systems in rust, Haskell, and other modern languages.
 
 To build the project, run `npm run build`.
 To run the test suite, run `npm test`.
 
+Minta provides a utility `match` function:
+>  `match(pattern: any, passthrough?: boolean): Function`
 
+The applied function takes an `odd` number of `<case>,  <callback(value)>` pairs where the last pair is the default case. The syntax fairly resembles [rust's pattern matching](https://doc.rust-lang.org/1.6.0/book/patterns.html).
+
+When `passthrough` is `true`, cases that match will apply on the transformed values, useful for building parsers.
 
 ### Real world examples
 
@@ -38,6 +43,15 @@ function fib(n) {
 ```
 
 ```javascript
+const a = match([1,2,3], true) (
+  ['a','b','c'], _ => ['abc']
+  [1,2,3],       _ => [123],
+  [123],         _ => [5]
+  _ => 0
+); // 5
+```
+
+```javascript
 class Example {
   do() {
     return 'thing';
@@ -49,9 +63,7 @@ const action = match(example) (
   String,  () => 'a string',
   Example, (e) => e.do(),
   () => false
-);
-
-console.log(action) // 'thing'
+); // 'thing'
 ```
 
 ## License
