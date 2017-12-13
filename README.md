@@ -7,7 +7,7 @@
 
 ## Details
 
-Minta was inspired by the pattern matching systems in rust, Haskell, and other modern languages.
+Minta was inspired by the pattern matching systems in Rust, Haskell, and other modern languages.
 
 To build the project, run `npm run build`.
 To run the test suite, run `npm test`.
@@ -48,7 +48,7 @@ const a = match([1,2,3], true) (
   [1,2,3],       _ => [123],
   [123],         _ => [5]
   _ => 0
-); // 5
+); // [5]
 ```
 
 ```javascript
