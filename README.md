@@ -15,7 +15,7 @@ To run the test suite, run `npm test`.
 Minta provides a utility `match` function:
 >  `match(pattern: any, passthrough?: boolean): Function`
 
-The applied function takes an `odd` number of `<case>,  <callback(value)>` pairs where the last pair is the default case. The syntax fairly resembles [rust's pattern matching](https://doc.rust-lang.org/1.6.0/book/patterns.html).
+The applied function takes an `odd` number of `<case>,  <callback(value)>` pairs where the last `callback` is the default case. The syntax fairly resembles [rust's pattern matching](https://doc.rust-lang.org/1.6.0/book/patterns.html).
 
 When `passthrough` is `true`, cases that match will apply on the transformed values, useful for building parsers.
 
