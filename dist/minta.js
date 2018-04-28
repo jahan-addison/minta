@@ -38,7 +38,7 @@ function apply(initial, test, application) {
         case Types.RegExp:
             return test.test(initial) ? application(initial) : false;
         case Types.Constructor:
-            return test && test.name === (initial.name || initial.constructor.name) ? application(initial) : false;
+            return initial && test.name === (initial.name || initial.constructor.name) ? application(initial) : false;
         case Types.Tuple:
             const t1 = Array.prototype.concat.apply([], [initial]);
             const t2 = Array.prototype.concat.apply([], [test]);
