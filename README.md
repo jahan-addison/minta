@@ -13,7 +13,7 @@ To build the project, run `npm run build`.
 To run the test suite, run `npm test`.
 
 Minta provides a utility `match` function:
->  `match(pattern: any, passthrough?: boolean): Function`
+>  `match(pattern: any, passthrough?: boolean): (...cases: any[]) => any`
 
 The applied function takes an `odd` number of `<case>,  <callback(value)>` pairs where the last `callback` is the default case. The syntax fairly resembles [rust's pattern matching](https://doc.rust-lang.org/1.6.0/book/patterns.html).
 

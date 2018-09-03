@@ -51,8 +51,8 @@ function apply(initial: any, test: any, application: Function): any {
 
 }
 
-export function match(pattern: any, passthrough: boolean = false): any {
-  return (...cases: any[]) => {
+export function match(pattern: any, passthrough: boolean = false): (...cases: any[]) => any {
+  return (...cases: any[]): any => {
     let ret;
     if (!(cases.length % 2)) {
       throw new SyntaxError('length of patterns and cases must be odd');
