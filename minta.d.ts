@@ -9,6 +9,6 @@ declare module 'minta' {
    * Note that when 'passthrough' is true, the base pattern is changed for every matched case in-order.
    *
    */
-  export function match(pattern: any, passthrough: boolean): (...cases: any[]) => any;
+  export function match(pattern: any, passthrough?: boolean): (...cases: any[]) => any;
 
 }
