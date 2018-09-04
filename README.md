@@ -13,9 +13,9 @@ To build the project, run `npm run build`.
 To run the test suite, run `npm test`.
 
 Minta provides a utility `match` function:
->  `match(pattern: any, passthrough?: boolean): (...cases: any[]) => any`
+>  `match(pattern: Pattern, passthrough?: boolean): (...cases: Array<Pattern | Callback>) => any`
 
-The applied function takes an `odd` number of `<case>,  <callback(value)>` pairs where the last `callback` is the default case. The syntax fairly resembles [rust's pattern matching](https://doc.rust-lang.org/1.6.0/book/patterns.html).
+The applied function takes an **odd** number of ( `Pattern` case,     `callback(value)` ) pairs, with the last `callback`being the default case. The syntax fairly resembles [rust's pattern matching](https://doc.rust-lang.org/1.6.0/book/patterns.html).
 
 When `passthrough` is `true`, cases that match will apply on the transformed values, useful for building parsers.
 
@@ -43,6 +43,7 @@ function fib(n) {
 ```
 
 ```javascript
+// passthrough (parsing)
 const a = match([1,2,3], true) (
   ['a','b','c'], _ => ['abc']
   [1,2,3],       _ => [123],
@@ -52,6 +53,7 @@ const a = match([1,2,3], true) (
 ```
 
 ```javascript
+// class cases
 class Example {
   do() {
     return 'thing';
