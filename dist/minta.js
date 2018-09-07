@@ -1,5 +1,8 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
+/**
+ * Enum of match types
+ */
 var Types;
 (function (Types) {
     Types[Types["Boolean"] = 1] = "Boolean";
@@ -8,10 +11,22 @@ var Types;
     Types[Types["Constructor"] = 4] = "Constructor";
     Types[Types["Primitive"] = 5] = "Primitive";
 })(Types = exports.Types || (exports.Types = {}));
-;
+/**
+ * Is this a tuple? (n-array). We use hasOwnPropery length to also
+ * check for strings and array-like objects.
+ *
+ * @param x a Pattern to test
+ * @returns is array
+ */
 function isTuple(x) {
     return x.hasOwnProperty('length');
 }
+/**
+ * Get type of a pattern
+ *
+ * @param x pattern
+ * @returns type
+ */
 function is(x) {
     if (typeof x === 'boolean')
         return Types.Boolean;
@@ -23,14 +38,28 @@ function is(x) {
         return Types.Tuple;
     return Types.Primitive;
 }
+/**
+ * Are 2 tuples equal?
+ * @param x first tuple
+ * @param y second tuple
+ * @returns if tuples match
+ */
 function eq(x, y) {
     if (x.length !== y.length) {
         return false;
     }
-    return x.reduce((is, item, index) => {
+    return x.reduce(function (is, item, index) {
         return is && item === y[index];
     }, true);
 }
+/**
+ * Apply a function on a pattern type match
+ *
+ * @param initial pattern
+ * @param test test type to compare
+ * @param application function to apply
+ * @returns the applicative value
+ */
 function apply(initial, test, application) {
     switch (is(test)) {
         case Types.Boolean:
@@ -40,22 +69,37 @@ function apply(initial, test, application) {
         case Types.Constructor:
             return initial && test.name === (initial.name || initial.constructor.name) ? application(initial) : false;
         case Types.Tuple:
-            const t1 = Array.prototype.concat.apply([], [initial]);
-            const t2 = Array.prototype.concat.apply([], [test]);
+            var t1 = Array.prototype.concat.apply([], [initial]);
+            var t2 = Array.prototype.concat.apply([], [test]);
             return eq(t1, t2) ? application(initial) : false;
         default:
             return initial === test ? application(initial) : false;
     }
 }
-function match(pattern, passthrough = false) {
-    return (...cases) => {
-        let ret;
+/**
+ * Pattern matcher
+ *
+ * @param pattern The base value to match against.
+ * @param passthrough The option to continue after a match, useful for parsing
+ * @return Returns a function that invokes pairs of (case, callback) and a default case callback
+ * whereby each 'case' is checked against the base pattern, and 'callback' is returned on a match.
+ * Note that when 'passthrough' is true, the base pattern is changed for every matched case in-order.
+ *
+ */
+function match(pattern, passthrough) {
+    if (passthrough === void 0) { passthrough = false; }
+    return function () {
+        var cases = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            cases[_i] = arguments[_i];
+        }
+        var ret;
         if (!(cases.length % 2)) {
             throw new SyntaxError('length of patterns and cases must be odd');
         }
-        for (let i = 0; i < cases.length - 1; i += 2) {
+        for (var i = 0; i < cases.length - 1; i += 2) {
             if (passthrough) {
-                let value = apply(i > 0 ? ret : pattern, cases[i + 0], cases[i + 1]);
+                var value = apply(i > 0 ? ret : pattern, cases[i + 0], cases[i + 1]);
                 if (value) {
                     ret = value;
                 }
@@ -66,11 +110,12 @@ function match(pattern, passthrough = false) {
             if (ret !== false && passthrough === false)
                 break;
         }
+        // apply the default callback
         if (!ret) {
             if (typeof cases[cases.length - 1] !== 'function') {
                 throw new SyntaxError('no default case callback was provided');
             }
-            const defaultApply = cases[cases.length - 1];
+            var defaultApply = cases[cases.length - 1];
             if (typeof defaultApply === 'function') {
                 return defaultApply(pattern);
             }
@@ -79,9 +124,10 @@ function match(pattern, passthrough = false) {
     };
 }
 exports.match = match;
+// method testing:
 exports.Test = {
-    isTuple,
-    is,
-    apply,
-    eq
+    isTuple: isTuple,
+    is: is,
+    apply: apply,
+    eq: eq
 };

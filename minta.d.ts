@@ -1,4 +1,24 @@
+/**
+ * Minta functional pattern matcher
+ */
 declare module 'minta' {
+  /**
+   * Enum of match types
+   */
+  export enum Types {
+    Boolean = 1,
+    Tuple,
+    RegExp,
+    Constructor,
+    Primitive
+  }
+
+  /**
+   * Extend Function type for the Object.property.name that exists on all objects.
+   */
+  interface Function {
+    name: string;
+  }
 
   /**
    * Pattern matcher
@@ -10,39 +30,38 @@ declare module 'minta' {
    * Note that when 'passthrough' is true, the base pattern is changed for every matched case in-order.
    *
    */
-
-  export function match(pattern: Pattern, passthrough?: boolean): (...cases: Array<Pattern | Callback>) => any;
+  export function match(pattern: any, passthrough?: boolean): (...cases: Array<Pattern | Callback>) => any;
 
   /**
    * Tuple type
    */
 
-  type Tuple     = Array<any>;
+  export type Tuple     = Array<any>;
 
   /**
    * Primitive type
    */
 
-  type Primitive = string | number | undefined | null;
+  export type Primitive = string | number | undefined | null;
 
   /**
    * Constructor type
    */
 
-  interface Constructor {
-    new (): any;
+  export interface Constructor {
+    constructor(): any;
   }
 
   /**
    * A Pattern
    */
 
-  type Pattern  = Tuple | boolean | Primitive | Constructor | RegExp;
+  export type Pattern  = Tuple | boolean | Function | Primitive | Constructor | RegExp;
 
   /**
    * A Callback
    */
 
-  type Callback = (item?: Pattern) => Pattern
+  export type Callback = (item?: Pattern) => Pattern
 
 }

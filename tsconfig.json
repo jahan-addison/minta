@@ -1,13 +1,19 @@
 {
     "compilerOptions": {
-        "noImplicitAny": false,
-        "target": "es2015",
-        "outDir": "dist",
+        "alwaysStrict": true,
+        "experimentalDecorators": true,
         "module": "commonjs",
-        "removeComments": true
+        "strict": true,
+        "lib": ["es2015"],
+        "outDir": "./dist",
+        "baseUrl": ".",
+        "typeRoots": [
+            "node_modules/@types",
+        ]
     },
     "files": [
         "minta.ts",
+        "minta.d.ts",
         "test.ts"
     ]
 }

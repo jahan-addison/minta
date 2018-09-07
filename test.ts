@@ -1,5 +1,5 @@
 import test from 'ava';
-import {match, Test, Types} from './minta';
+import { match, Test, Types } from './minta';
 
 test.beforeEach(t => {
   t.context.data = {
@@ -89,3 +89,4 @@ test('#match should apply all matched cases on passthrough', t => {
     _ => 'default'
   ), 'super');
 });
+

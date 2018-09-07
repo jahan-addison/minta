@@ -1,18 +1,63 @@
-type Tuple = Array<any>;
-
+/**
+ * Enum of match types
+ */
 export enum Types {
   Boolean = 1,
   Tuple,
   RegExp,
   Constructor,
   Primitive
-};
+}
 
+/**
+ * Tuple type
+ */
+
+export type Tuple     = Array<any>;
+
+/**
+ * Primitive type
+ */
+
+export type Primitive = string | number;
+
+/**
+ * Constructor type
+ */
+
+export interface Constructor {
+  constructor: any;
+}
+
+/**
+ * A Pattern
+ */
+
+export type Pattern  = Tuple | boolean | Function |  Primitive | Constructor | RegExp;
+/**
+ * A Callback
+ */
+
+export type Callback = (item?: Pattern) => Pattern
+
+/**
+ * Is this a tuple? (n-array). We use hasOwnPropery length to also
+ * check for strings and array-like objects.
+ *
+ * @param x a Pattern to test
+ * @returns is array
+ */
 function isTuple(x: any): boolean {
   return x.hasOwnProperty('length');
 }
 
-function is(x: any): Types {
+/**
+ * Get type of a pattern
+ *
+ * @param x pattern
+ * @returns type
+ */
+function is(x: Pattern): Types {
   if (typeof x === 'boolean')
     return Types.Boolean;
   if (x instanceof RegExp)
@@ -24,6 +69,12 @@ function is(x: any): Types {
   return Types.Primitive;
 }
 
+/**
+ * Are 2 tuples equal?
+ * @param x first tuple
+ * @param y second tuple
+ * @returns if tuples match
+ */
 function eq(x: Tuple, y: Tuple): boolean {
   if (x.length !== y.length) {
     return false;
@@ -33,7 +84,15 @@ function eq(x: Tuple, y: Tuple): boolean {
   }, true);
 }
 
-function apply(initial: any, test: any, application: Function): any {
+/**
+ * Apply a function on a pattern type match
+ *
+ * @param initial pattern
+ * @param test test type to compare
+ * @param application function to apply
+ * @returns the applicative value
+ */
+function apply(initial: any, test: any, application: Callback): any {
   switch(is(test)) {
     case Types.Boolean:
       return test ? application(initial) : false;
@@ -51,8 +110,18 @@ function apply(initial: any, test: any, application: Function): any {
 
 }
 
-export function match(pattern: any, passthrough: boolean = false): (...cases: any[]) => any {
-  return (...cases: any[]): any => {
+/**
+ * Pattern matcher
+ *
+ * @param pattern The base value to match against.
+ * @param passthrough The option to continue after a match, useful for parsing
+ * @return Returns a function that invokes pairs of (case, callback) and a default case callback
+ * whereby each 'case' is checked against the base pattern, and 'callback' is returned on a match.
+ * Note that when 'passthrough' is true, the base pattern is changed for every matched case in-order.
+ *
+ */
+export function match(pattern: Pattern, passthrough: boolean = false): (...cases: Array<Pattern | Callback>) => any {
+  return (...cases: Array<Pattern | Callback>): any => {
     let ret;
     if (!(cases.length % 2)) {
       throw new SyntaxError('length of patterns and cases must be odd');
@@ -61,12 +130,12 @@ export function match(pattern: any, passthrough: boolean = false): (...cases: an
       if (passthrough) {
         let value = apply(i > 0 ? ret : pattern,
           cases[i+0],
-          <Function>cases[i+1]);
+          <Callback>cases[i+1]);
         if (value) {
           ret = value;
         }
       } else {
-        ret = apply(pattern, cases[i+0], <Function>cases[i+1]);
+        ret = apply(pattern, cases[i+0], <Callback>cases[i+1]);
       }
       if (ret !== false && passthrough === false)
         break;
@@ -76,7 +145,7 @@ export function match(pattern: any, passthrough: boolean = false): (...cases: an
       if (typeof cases[cases.length-1] !== 'function') {
         throw new SyntaxError('no default case callback was provided');
       }
-      const defaultApply = <Function>cases[cases.length-1];
+      const defaultApply = <Callback>cases[cases.length-1];
       if (typeof defaultApply === 'function') {
         return defaultApply(pattern);
       }
