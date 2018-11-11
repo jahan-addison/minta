@@ -7,7 +7,7 @@
 
 ## Details
 
-Minta was inspired by the pattern matching systems in Rust, Haskell, and other modern languages.
+Minta was inspired by the pattern matching systems in Rust, Haskell, and other resourceful languages.
 
 To build the project, run `npm run build`.
 To run the test suite, run `npm test`.
