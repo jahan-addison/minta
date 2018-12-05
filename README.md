@@ -26,20 +26,31 @@ When `passthrough` is `true`, cases that match will apply on the transformed val
 const a = match(value) (
   value < min, _ => min,
   value < max, _ => value,
-  _ => max
+  otherwise      => max
 );
 ```
 
 ```javascript
-// fib
+// fibonacci
 function fib(n) {
   return match(n) (
     0, x => 1,
     1, x => 1,
     n >= 2, x => fib(x-1) + fib(x-2),
-    _ => n
+    otherwise => n
   );
 }
+```
+
+```javascript
+// regex matching
+const type = match(fileType) (
+  /\.js/,   () => 'javascript',
+  /\.scss/, () => 'sass',
+  /\.json/, () => 'json',
+  /\.yml/,  () => 'yaml',
+  otherwise    => 'json'
+)
 ```
 
 ```javascript
@@ -48,7 +59,7 @@ const a = match([1,2,3], true) (
   ['a','b','c'], _ => ['abc']
   [1,2,3],       _ => [123],
   [123],         _ => [5]
-  _ => 0
+  otherwise        => 0
 ); // [5]
 ```
 
@@ -56,16 +67,16 @@ const a = match([1,2,3], true) (
 // class cases
 class Example {
   do() {
-    return 'thing';
+    return 'example thing';
   }
 }
 const example = new Example();
 const action = match(example) (
-  RegExp,  () => 'a regex',
-  String,  () => 'a string',
+  RegExp,  ()  => 'a regex',
+  String,  ()  => 'a string',
   Example, (e) => e.do(),
-  () => false
-); // 'thing'
+  otherwise    => false
+); // 'example thing'
 ```
 
 ## License

@@ -1,6 +1,6 @@
 {
   "name": "minta",
-  "version": "3.0.11",
+  "version": "3.0.12",
   "description": "Simple, powerful pattern matcher",
   "main": "dist/minta.js",
   "types": "./minta.d.ts",

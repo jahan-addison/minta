@@ -89,4 +89,3 @@ test('#match should apply all matched cases on passthrough', t => {
     _ => 'default'
   ), 'super');
 });
-
