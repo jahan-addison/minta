@@ -19,6 +19,12 @@ The applied function takes an **odd** number of ( `Pattern` case,     `callback(
 
 When `passthrough` is `true`, cases that match will apply on the transformed values, useful for building parsers.
 
+## How to use
+
+Minta works without Typescript, of course, and may be installed with yarn or npm:
+
+`yarn add minta`
+
 ### Real world examples
 
 ```javascript
@@ -50,7 +56,17 @@ const type = match(fileType) (
   /\.json/, () => 'json',
   /\.yml/,  () => 'yaml',
   otherwise    => 'json'
-)
+);
+```
+
+```javascript
+// check falsely values
+const check = match(null) (
+  undefined, _ => 'undefined',
+  false,     _ => 'false',
+  null,      _ => 'null',
+  otherwise    => 'default'
+); // 'null'
 ```
 
 ```javascript

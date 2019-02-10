@@ -1,8 +1,26 @@
 {
   "name": "minta",
-  "version": "3.0.14",
-  "description": "Simple, powerful pattern matcher",
+  "version": "3.1.0",
+  "description": "Simple, powerful and functional pattern matcher",
   "main": "dist/minta.js",
+  "homepage": "https://github.com/jahan-addison/minta",
+  "keywords": [
+    "typescript",
+    "javascript",
+    "pattern",
+    "matching",
+    "functional",
+    "parser",
+    "parsing"
+  ],
+  "files": [
+    "minta.d.ts",
+    "dist/*.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jahan-addison/minta.git"
+  },
   "types": "./minta.d.ts",
   "devDependencies": {
     "@types/node": "^10.9.4",

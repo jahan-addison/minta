@@ -12,6 +12,10 @@ var Types;
     Types[Types["Primitive"] = 5] = "Primitive";
 })(Types = exports.Types || (exports.Types = {}));
 /**
+ * An object reference to be used as 'null' without collision with `pattern'
+ */
+exports.NULLPTR = Object.create(null);
+/**
  * Is this a tuple? (n-array). We use hasOwnPropery length to also
  * check for strings and array-like objects.
  *
@@ -19,7 +23,7 @@ var Types;
  * @returns is array
  */
 function isTuple(x) {
-    return x.hasOwnProperty('length');
+    return x && x.hasOwnProperty('length');
 }
 /**
  * Get type of a pattern
@@ -62,18 +66,16 @@ function eq(x, y) {
  */
 function apply(initial, test, application) {
     switch (is(test)) {
-        case Types.Boolean:
-            return test ? application(initial) : false;
         case Types.RegExp:
-            return test.test(initial) ? application(initial) : false;
+            return test.test(initial) ? application(initial) : exports.NULLPTR;
         case Types.Constructor:
-            return initial && test.name === (initial.name || initial.constructor.name) ? application(initial) : false;
+            return initial && test.name === (initial.name || initial.constructor.name) ? application(initial) : exports.NULLPTR;
         case Types.Tuple:
             var t1 = Array.prototype.concat.apply([], [initial]);
             var t2 = Array.prototype.concat.apply([], [test]);
-            return eq(t1, t2) ? application(initial) : false;
+            return eq(t1, t2) ? application(initial) : exports.NULLPTR;
         default:
-            return initial === test ? application(initial) : false;
+            return initial === test ? application(initial) : exports.NULLPTR;
     }
 }
 /**
@@ -93,25 +95,25 @@ function match(pattern, passthrough) {
         for (var _i = 0; _i < arguments.length; _i++) {
             cases[_i] = arguments[_i];
         }
-        var ret;
+        var ret = exports.NULLPTR;
         if (!(cases.length % 2)) {
             throw new SyntaxError('length of patterns and cases must be odd');
         }
         for (var i = 0; i < cases.length - 1; i += 2) {
             if (passthrough) {
                 var value = apply(i > 0 ? ret : pattern, cases[i + 0], cases[i + 1]);
-                if (value) {
+                if (value !== exports.NULLPTR) {
                     ret = value;
                 }
             }
             else {
                 ret = apply(pattern, cases[i + 0], cases[i + 1]);
             }
-            if (ret !== false && passthrough === false)
+            if (ret !== exports.NULLPTR && passthrough === false)
                 break;
         }
         // apply the default callback
-        if (!ret) {
+        if (ret === exports.NULLPTR) {
             if (typeof cases[cases.length - 1] !== 'function') {
                 throw new SyntaxError('no default case callback was provided');
             }

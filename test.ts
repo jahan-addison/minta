@@ -1,5 +1,5 @@
 import test from 'ava';
-import { match, Test, Types } from './minta';
+import { match, Test, Types, NULLPTR } from './minta';
 
 test.beforeEach(t => {
   t.context.data = {
@@ -54,7 +54,7 @@ test('#apply should apply function based on type and equality', t => {
   t.is(apply("testing", stubs[3], dumb), 'yes');
   t.is(apply(stubs[4], true, dumb), 'yes');
   t.is(apply(stubs[5], "hello world", dumb), 'yes');
-  t.is(apply(stubs[0], [3,2,1], dumb), false);
+  t.is(apply(stubs[0], [3,2,1], dumb), NULLPTR);
   t.is(called, 6);
 });
 
@@ -64,6 +64,26 @@ test('#match should error with no default case', t => {
     'test', () => 5,
   )}, SyntaxError);
 });
+
+test('#match should work on falsely values as patterns', t => {
+  t.is(match(null) (
+    undefined, ()   => 'no',
+    true,      ()   => 'no',
+    null,      ()   => 'yes',
+    _ => 'default'
+  ), 'yes');
+  t.is(match(false) (
+    true,  ()  => 'no',
+    null,  ()  => 'no',
+    false, ()  => 'yes',
+    _ => 'default'
+  ), 'yes');
+  t.is(match(undefined) (
+    false, ()  => 'no',
+    null, ()   => 'no',
+    _ => 'default'
+  ), 'default');
+})
 
 test('#match should only apply the first matched case', t => {
   t.is(match('test') (

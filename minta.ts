@@ -19,7 +19,7 @@ export type Tuple     = Array<any>;
  * Primitive type
  */
 
-export type Primitive = string | number;
+export type Primitive = string | number | null | undefined;
 
 /**
  * Constructor type
@@ -41,6 +41,11 @@ export type Pattern  = Tuple | boolean | Function |  Primitive | Constructor | R
 export type Callback = (item?: Pattern) => Pattern
 
 /**
+ * An object reference to be used as 'null' without collision with `pattern'
+ */
+export const NULLPTR = Object.create(null);
+
+/**
  * Is this a tuple? (n-array). We use hasOwnPropery length to also
  * check for strings and array-like objects.
  *
@@ -48,7 +53,7 @@ export type Callback = (item?: Pattern) => Pattern
  * @returns is array
  */
 function isTuple(x: any): boolean {
-  return x.hasOwnProperty('length');
+  return x && x.hasOwnProperty('length');
 }
 
 /**
@@ -94,18 +99,16 @@ function eq(x: Tuple, y: Tuple): boolean {
  */
 function apply(initial: any, test: any, application: Callback): any {
   switch(is(test)) {
-    case Types.Boolean:
-      return test ? application(initial) : false;
     case Types.RegExp:
-      return test.test(initial) ? application(initial) : false;
+      return test.test(initial) ? application(initial) : NULLPTR;
     case Types.Constructor:
-      return initial && test.name === (initial.name || initial.constructor.name) ? application(initial) : false;
+      return initial && test.name === (initial.name || initial.constructor.name) ? application(initial) : NULLPTR;
     case Types.Tuple:
       const t1 = Array.prototype.concat.apply([], [initial]);
       const t2 = Array.prototype.concat.apply([], [test]);
-      return eq(t1, t2) ? application(initial) : false;
+      return eq(t1, t2) ? application(initial) : NULLPTR;
     default:
-      return initial === test ? application(initial) : false;
+      return initial === test ? application(initial) : NULLPTR;
     }
 
 }
@@ -122,7 +125,7 @@ function apply(initial: any, test: any, application: Callback): any {
  */
 export function match(pattern: Pattern, passthrough: boolean = false): (...cases: Array<Pattern | Callback>) => any {
   return (...cases: Array<Pattern | Callback>): any => {
-    let ret;
+    let ret = NULLPTR;
     if (!(cases.length % 2)) {
       throw new SyntaxError('length of patterns and cases must be odd');
     }
@@ -131,17 +134,17 @@ export function match(pattern: Pattern, passthrough: boolean = false): (...cases
         let value = apply(i > 0 ? ret : pattern,
           cases[i+0],
           <Callback>cases[i+1]);
-        if (value) {
+        if (value !== NULLPTR) {
           ret = value;
         }
       } else {
         ret = apply(pattern, cases[i+0], <Callback>cases[i+1]);
       }
-      if (ret !== false && passthrough === false)
+      if (ret !== NULLPTR && passthrough === false)
         break;
     }
     // apply the default callback
-    if (!ret) {
+    if (ret === NULLPTR) {
       if (typeof cases[cases.length-1] !== 'function') {
         throw new SyntaxError('no default case callback was provided');
       }
