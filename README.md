@@ -25,7 +25,11 @@ Minta works without Typescript, of course, and may be installed with yarn or npm
 
 `yarn add minta`
 
-### Real world examples
+or,
+
+`npm install --save minta`
+
+## Real world examples
 
 ```javascript
 // clamp
@@ -60,7 +64,7 @@ const type = match(fileType) (
 ```
 
 ```javascript
-// check falsely values
+// check falsey values
 const check = match(null) (
   undefined, _ => 'undefined',
   false,     _ => 'false',
