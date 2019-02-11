@@ -1,5 +1,5 @@
 # Minta
-> Simple, effective, pattern matcher.
+> Simple, effective, functional pattern matcher.
 
 ## What is pattern matching?
 
@@ -27,7 +27,18 @@ Minta works without Typescript, of course, and may be installed with yarn or npm
 
 or,
 
-`npm install --save minta`
+`npm install --save minta`.
+
+Then you can import `match`:
+
+```javascript
+import { match } from 'minta';
+const data = match(someValue()) (
+  'the pattern', (e) => e + ' is this value',
+  /another?/,     _  => 'that value',
+  otherwise          => false
+)
+```
 
 ## Real world examples
 
@@ -65,7 +76,7 @@ const type = match(fileType) (
 
 ```javascript
 // check falsey values
-const check = match(null) (
+const check = match(isFalsey()) ( // null
   undefined, _ => 'undefined',
   false,     _ => 'false',
   null,      _ => 'null',
