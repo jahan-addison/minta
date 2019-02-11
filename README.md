@@ -39,7 +39,7 @@ const data = match(someValue()) (
   'the pattern', (e) => e + ' is this value',
   /another?/,     _  => 'that value',
   otherwise          => false
-)
+);
 ```
 
 ## Real world examples
