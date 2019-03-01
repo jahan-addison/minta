@@ -65,17 +65,16 @@ test('#match should error with no default case', t => {
   )}, SyntaxError);
 });
 
-test('#match should work on falsely values as patterns', t => {
+test('#match should work on null-like primitives values as patterns', t => {
   t.is(match(null) (
     undefined, ()   => 'no',
-    true,      ()   => 'no',
     null,      ()   => 'yes',
     _ => 'default'
   ), 'yes');
-  t.is(match(false) (
-    true,  ()  => 'no',
+  t.is(match(0) (
+    false, ()  => 'no',
     null,  ()  => 'no',
-    false, ()  => 'yes',
+    0,     ()  => 'yes',
     _ => 'default'
   ), 'yes');
   t.is(match(undefined) (

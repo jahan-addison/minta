@@ -66,6 +66,8 @@ function eq(x, y) {
  */
 function apply(initial, test, application) {
     switch (is(test)) {
+        case Types.Boolean:
+            return test ? application(initial) : exports.NULLPTR;
         case Types.RegExp:
             return test.test(initial) ? application(initial) : exports.NULLPTR;
         case Types.Constructor:

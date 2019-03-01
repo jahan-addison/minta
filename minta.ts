@@ -99,6 +99,8 @@ function eq(x: Tuple, y: Tuple): boolean {
  */
 function apply(initial: any, test: any, application: Callback): any {
   switch(is(test)) {
+    case Types.Boolean:
+      return test ? application(initial) : NULLPTR;
     case Types.RegExp:
       return test.test(initial) ? application(initial) : NULLPTR;
     case Types.Constructor:
