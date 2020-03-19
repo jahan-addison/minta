@@ -1,5 +1,4 @@
 "use strict";
-exports.__esModule = true;
 /**
  * Enum of match types
  */
