@@ -77,7 +77,7 @@ const type = match(fileType) (
 ```
 
 ```javascript
-// check null-like values
+// check for null-like values
 const check = match(isNull()) (
   undefined, _ => 'undefined',
   false,     _ => 'false',

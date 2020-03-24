@@ -2,12 +2,15 @@
     "compilerOptions": {
         "alwaysStrict": true,
         "experimentalDecorators": true,
-        "module": "commonjs",
+        "module": "UMD",
+        "moduleResolution": "node",
         "strict": true,
+        "noImplicitAny": true,
         "lib": ["es2015"],
         "outDir": "./dist",
         "baseUrl": ".",
         "typeRoots": [
+            "node_modules/ava/index.d.ts",
             "node_modules/@types",
         ]
     },
