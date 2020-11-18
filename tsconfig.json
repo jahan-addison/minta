@@ -1,5 +1,8 @@
 {
     "compilerOptions": {
+        "esModuleInterop": false,
+        "allowSyntheticDefaultImports": true,
+        "noEmitOnError": false,
         "alwaysStrict": true,
         "experimentalDecorators": true,
         "module": "UMD",

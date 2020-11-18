@@ -7,7 +7,7 @@
 
 ## Details
 
-Minta was inspired by the pattern matching systems in Rust, Haskell, and other resourceful languages.
+Minta was inspired by the pattern matching systems in Rust, Haskell, and other functional languages.
 
 To build the project, run `npm run build`.
 To run the test suite, run `npm test`.
@@ -15,15 +15,15 @@ To run the test suite, run `npm test`.
 Minta provides a utility `match` function:
 >  `match(pattern: Pattern, passthrough?: boolean): (...cases: <Pattern | Callback>) => any`
 
-`Pattern` may be any primitive value (string, boolean, number, null, etc), an object (or constructor), an array (tuple), or a regex expression.
+`Pattern` may be any primitive value (string, boolean, number, null, etc), an object (or constructor), an array (tuple), or a regular expression.
 
-The applied function takes an **odd** number of ( `Pattern` case,     `callback(value)` ) pairs, and a last `callback`being the default case. The syntax fairly resembles [rust's pattern matching](https://doc.rust-lang.org/1.6.0/book/patterns.html).
+The applied function takes an **odd** number of ( `Pattern` case,     `callback(value)` ) pairs, with the last `callback`being the default case. The syntax fairly resembles [rust's pattern matching](https://doc.rust-lang.org/1.6.0/book/patterns.html).
 
 When `passthrough` is `true`, cases that match will apply on the transformed values, useful for building parsers.
 
 ## How to use
 
-Minta works without Typescript, of course, and may be installed with yarn or npm:
+Minta works without Typescript and may be installed with yarn or npm:
 
 `yarn add minta`
 
